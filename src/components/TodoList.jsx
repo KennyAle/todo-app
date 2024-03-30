@@ -28,7 +28,9 @@ function TodoList () {
             </form>
             <ul>
                 {todos.map((todo, index) => (
-                    <li key={index}>{todo}
+                    <li key={index}>
+                        <input type="checkbox" id='task' name='task' />
+                        <label htmlFor='task'>{todo}</label>
                         <button onClick={() => deleteTodo(index)}>Delete</button>
                     </li>
                 ))}
