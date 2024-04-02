@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 function TodoList() {
-    const [todos, setTodos] = useState([])
+    const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('TASKS')) || [])
     const [input, setInput] = useState('')
 
     function handleChange(e) {
@@ -18,6 +18,10 @@ function TodoList() {
         newTodos.splice(index, 1)
         setTodos(newTodos)
     }
+
+    useEffect(() => {
+        localStorage.setItem('TASKS', JSON.stringify(todos))
+    }, [todos])
 
     return (
         <div className='bg-gray-50 dark:bg-gray-800 dark:border-gray-700'>
