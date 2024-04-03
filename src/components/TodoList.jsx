@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 function TodoList() {
-    const [tasksList, setTasksList] = useState([{ task: "" }]);
+    const [tasksList, setTasksList] = useState([{ task: "" }])
 
     function handleTaskAdd() {
-        setTasksList([...tasksList, { task: "" }]);
+        setTasksList([...tasksList, { task: "" }])
     }
 
     function handleTaskRemove(index) {
-        const newTasks = [...tasksList];
-        newTasks.splice(index, 1);
-        setTasksList(newTasks);
+        const newTasks = [...tasksList]
+        newTasks.splice(index, 1)
+        setTasksList(newTasks)
     }
 
     function handleTaskEdit(e, index) {
-        const { value } = e.target;
-        const newTasks = [...tasksList];
-        newTasks[index].task = value;
-        setTasksList(newTasks);
+        const { value } = e.target
+        const newTasks = [...tasksList]
+        newTasks[index].task = value
+        setTasksList(newTasks)
+    }
+
+    function handleKeyDown(e) {
+        if (e.key === "Enter") {
+            e.preventDefault()
+            handleTaskAdd()
+        }
     }
 
     return (
@@ -28,9 +35,17 @@ function TodoList() {
                     <div className="relative">
                         {tasksList.map((task, index) => (
                             <div key={index}>
-                                <input type="text" id="task" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={task.task} onChange={(e) => handleTaskEdit(e, index)} />
+                                <input type="text"
+                                id="task" 
+                                className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                value={task.task} 
+                                onChange={(e) => handleTaskEdit(e, index)} 
+                                onKeyDown={handleKeyDown}/>
                                 {index !== tasksList.length - 1 &&
-                                    <button onClick={() => handleTaskRemove(index)} type="button" className="text-blue-700 border border-blue-900 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-900 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 bg-blue-500">
+                                    <button 
+                                    onClick={() => handleTaskRemove(index)} 
+                                    type="button" 
+                                    className="text-blue-700 border border-blue-900 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:border-blue-900 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 bg-blue-500">
                                         <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                             <path fillRule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clipRule="evenodd" />
                                         </svg>
