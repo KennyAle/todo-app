@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TodoList from './components/TodoList';
 import NewList from './components/NewList';
 function App() {
   const [lists, setLists] = useState([])
+
+  useEffect(() => {
+    const storedLists = localStorage.getItem('lists')
+    if (storedLists) {
+      setLists(JSON.parse(storedLists))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('lists', JSON.stringify(lists))
+  }, [lists])
 
   function handleNewList(name) {
     setLists([...lists, { name, tasks: [] }])
