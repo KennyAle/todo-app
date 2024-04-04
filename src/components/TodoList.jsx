@@ -32,7 +32,7 @@ function TodoList() {
     }
 
     return (
-        <div className='bg-gray-50 dark:bg-gray-800 dark:border-gray-700'>
+        <div className='max-w-sm bg-gray-50 dark:bg-gray-800 dark:border-gray-700'>
             <div className="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                 <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Todo List</h1>
                 <form>
