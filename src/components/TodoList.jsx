@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
 function TodoList( {listName, tasks} ) {
-    const [tasksList, setTasksList] = useState(JSON.parse (localStorage.getItem('storedTasks')) || [{ task: "" }])
+    const [tasksList, setTasksList] = useState(JSON.parse (localStorage.getItem(`storedTasks_${listName}`)) || [{ task: "" }])
 
     useEffect(() => {
-        localStorage.setItem('storedTasks', JSON.stringify(tasksList))
-    }, [tasksList])
+        localStorage.setItem(`storedTasks_${listName}`, JSON.stringify(tasksList))
+    }, [listName, tasksList])
 
     function handleTaskAdd() {
         setTasksList([...tasksList, { task: "" }])
