@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-function TodoList() {
+function TodoList( {listName, tasks} ) {
     const [tasksList, setTasksList] = useState(JSON.parse (localStorage.getItem('storedTasks')) || [{ task: "" }])
 
     useEffect(() => {
@@ -34,7 +34,7 @@ function TodoList() {
     return (
         <div className='max-w-sm bg-gray-50 dark:bg-gray-800 dark:border-gray-700'>
             <div className="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-                <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Todo List</h1>
+                <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{listName}</h1>
                 <form>
                     <div className="relative">
                         {tasksList.map((task, index) => (
