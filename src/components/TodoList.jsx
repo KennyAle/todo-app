@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-function TodoList({ listName }) {
+function TodoList({ listName, onListRemove }) {
     const [tasksList, setTasksList] = useState(JSON.parse(localStorage.getItem(`storedTasks_${listName}`)) || [{ task: "" }])
     const inputRefs = useRef([])
 
@@ -8,9 +8,9 @@ function TodoList({ listName }) {
         localStorage.setItem(`storedTasks_${listName}`, JSON.stringify(tasksList))
     }, [listName, tasksList])
 
-    function handleTaskAdd() {
-        setTasksList([...tasksList, { task: "" }])
-    }
+    // function handleTaskAdd() {
+    //     setTasksList([...tasksList, { task: "" }])
+    // }
 
     function handleTaskRemove(index) {
         const newTasks = [...tasksList]
@@ -29,25 +29,43 @@ function TodoList({ listName }) {
         if (e.key === "Enter") {
             e.preventDefault()
             const index = tasksList.length - 1
-            if (index === - 1 || tasksList[index].task.trim() !== ''){
+            if (index === - 1 || tasksList[index].task.trim() !== '') {
                 const newTaskList = [...tasksList, { task: "" }]
                 setTasksList(newTaskList)
                 setTimeout(() => {
                     inputRefs.current[index + 1].focus()
                 }, 0)
-            } 
+            }
         }
     }
 
+    function handleBlur() {
+        const index = tasksList.length - 1
+        if (index >= - 0 && tasksList[index].task.trim() !== '') {
+            const newTaskList = [...tasksList, { task: "" }]
+            setTasksList(newTaskList)
+        }
+    }
+
+    function handleListRemove() {
+        onListRemove(listName)
+    }
+
     return (
-        <div className='rounded-md max-w-sm min-w-72 bg-gray-50 dark:bg-gray-800 dark:border-gray-700'>
+        <div className='relative rounded-md max-w-sm min-w-72 bg-gray-50 dark:bg-gray-800 dark:border-gray-700'>
+            <svg
+                onClick={handleListRemove}
+                className="absolute right-0 m-1 w-5 h-5 text-slate-400 hover:text-slate-200 hover:transition-all cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
+            </svg>
+            <span className='sr-only'>Delete list button</span>
             <div className="flex flex-col gap-4 p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                 <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{listName}</h1>
-                <form onKeyDown={handleKeyDown}>
+                <form onKeyDown={handleKeyDown} onBlur={handleBlur}>
                     <div className="relative flex flex-col gap-4">
                         {tasksList.map((task, index) => (
                             <div className='relative' key={index}>
-                                <input 
+                                <input
                                     ref={(el) => (inputRefs.current[index] = el)}
                                     type="text"
                                     id="task"
@@ -55,21 +73,21 @@ function TodoList({ listName }) {
                                     placeholder="Enter New Task"
                                     value={task.task}
                                     onChange={(e) => handleTaskEdit(e, index)}
+                                    onBlur={handleBlur}
                                     /*onKeyDown={index === tasksList.length - 1 ? handleKeyDown: null}*/ />
-                                    {index !== tasksList.length - 1 &&
+                                {index !== tasksList.length - 1 &&
                                     <button
                                         onClick={() => handleTaskRemove(index)}
                                         type="button"
                                         className="text-slate-400 hover:text-slate-200 hover:transition-all absolute end-0.5 bottom-2.5   font-medium rounded-lg text-sm px-2 py-2">
-                                        <svg className="w-6 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M6 18 17.94 6M18 18 6.06 6" />
+                                        <svg className="opacity-60 w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                         </svg>
                                         <span className="sr-only">Delete button</span>
                                     </button>
                                 }
                             </div>
                         ))}
-                        <button onClick={handleTaskAdd} type="button" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Task</button>
                     </div>
                 </form>
             </div>

@@ -18,14 +18,18 @@ function App() {
   function handleNewList(name) {
     setLists([...lists, { name, tasks: [] }])
   }
+
+  function handleListRemove(listName) {
+    setLists(lists.filter((list) => list.name !== listName))
+  }
   return (
     <div className="App flex flex-wrap gap-4 m-5">
       {lists.map((list, index) => (
         <div key={index}>
-          <TodoList listName={list.name} tasks={list.tasks} />
+          <TodoList listName={list.name} tasks={list.tasks} onListRemove={handleListRemove} />
         </div>
       ))}
-      <NewList onNewList={handleNewList} />
+      <NewList onNewList={handleNewList} existingLists={lists} />
     </div>
   );
 }
