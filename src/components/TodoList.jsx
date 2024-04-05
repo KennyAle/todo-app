@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
-function TodoList({ listName, tasks }) {
+function TodoList({ listName }) {
     const [tasksList, setTasksList] = useState(JSON.parse(localStorage.getItem(`storedTasks_${listName}`)) || [{ task: "" }])
+    const inputRefs = useRef([])
 
     useEffect(() => {
         localStorage.setItem(`storedTasks_${listName}`, JSON.stringify(tasksList))
@@ -27,7 +28,14 @@ function TodoList({ listName, tasks }) {
     function handleKeyDown(e) {
         if (e.key === "Enter") {
             e.preventDefault()
-            handleTaskAdd()
+            const index = tasksList.length - 1
+            if (index === - 1 || tasksList[index].task.trim() !== ''){
+                const newTaskList = [...tasksList, { task: "" }]
+                setTasksList(newTaskList)
+                setTimeout(() => {
+                    inputRefs.current[index + 1].focus()
+                }, 0)
+            } 
         }
     }
 
@@ -35,18 +43,20 @@ function TodoList({ listName, tasks }) {
         <div className='rounded-md max-w-sm min-w-72 bg-gray-50 dark:bg-gray-800 dark:border-gray-700'>
             <div className="flex flex-col gap-4 p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
                 <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{listName}</h1>
-                <form>
+                <form onKeyDown={handleKeyDown}>
                     <div className="relative flex flex-col gap-4">
                         {tasksList.map((task, index) => (
                             <div className='relative' key={index}>
-                                <input type="text"
+                                <input 
+                                    ref={(el) => (inputRefs.current[index] = el)}
+                                    type="text"
                                     id="task"
                                     className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Enter New Task"
                                     value={task.task}
                                     onChange={(e) => handleTaskEdit(e, index)}
-                                    onKeyDown={index === tasksList.length - 1 ? handleKeyDown : null} />
-                                {index !== tasksList.length - 1 &&
+                                    /*onKeyDown={index === tasksList.length - 1 ? handleKeyDown: null}*/ />
+                                    {index !== tasksList.length - 1 &&
                                     <button
                                         onClick={() => handleTaskRemove(index)}
                                         type="button"
