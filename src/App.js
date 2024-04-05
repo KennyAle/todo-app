@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import TodoList from './components/TodoList';
-import NewList from './components/NewList';
+import React, { useEffect, useState } from 'react'
+import TodoList from './components/TodoList'
+import NewList from './components/NewList'
 function App() {
   const [lists, setLists] = useState([])
 
@@ -19,7 +19,7 @@ function App() {
     setLists([...lists, { name, tasks: [] }])
   }
   return (
-    <div className="App">
+    <div className="App flex flex-wrap gap-4 m-5">
       {lists.map((list, index) => (
         <div key={index}>
           <TodoList listName={list.name} tasks={list.tasks} />
