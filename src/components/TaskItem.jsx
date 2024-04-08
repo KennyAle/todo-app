@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function TaskItem({ tasksList, task, index, inputRefs, handleTaskEdit, handleTaskRemove, handleBlur }) {
-    const [isChecked, setIsChecked] = useState(false)
+    const [isChecked, setIsChecked] = useState(() => {
+        const storedState = localStorage.getItem(`task_${task.id}`)
+        return storedState ? JSON.parse(storedState) : false
+    })
+
+    useEffect(() => {
+        localStorage.setItem(`task_${task.id}`, JSON.stringify(isChecked))
+    }, [isChecked, task.id])
     
     function handleTaskCheck() {
         setIsChecked(!isChecked)
