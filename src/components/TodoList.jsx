@@ -71,7 +71,7 @@ function TodoList({ listName, onListRemove }) {
                             <TaskItem
                                 inputRefs={inputRefs}
                                 tasksList={tasksList}
-                                key={task.id}
+                                key={index}
                                 index={index}
                                 task={task}
                                 handleTaskEdit={handleTaskEdit}
