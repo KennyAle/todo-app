@@ -51,7 +51,7 @@ function TodoList({ listName, onListRemove }) {
     return (
         <div className='relative rounded-md max-w-sm min-w-72 bg-gray-50 dark:bg-gray-800 dark:border-gray-700'>
             <div className="w-full bg-gray-200 rounded-t-md h-2.5 dark:bg-gray-700">
-                <div className="bg-emerald-600 h-2.5 rounded-full w-[70%]" /*style="width: 45%"*/></div>
+                <div className="bg-emerald-600 h-2.5 rounded-full w-[70%] transition-transform" /*style="width: 45%"*/></div>
             </div>
             <svg
                 onClick={handleListRemove}
