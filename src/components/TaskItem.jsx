@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-function TaskItem({ tasksList, task, index, inputRefs, handleTaskEdit, handleTaskRemove, handleBlur }) {
-    const [isChecked, setIsChecked] = useState(() => {
-        const storedState = localStorage.getItem(`task_${task.id}`)
-        return storedState ? JSON.parse(storedState) : false
-    })
+function TaskItem({ tasksList, setTasksList, task, index, inputRefs, handleTaskEdit, handleTaskRemove, handleBlur }) {
+    const [isChecked, setIsChecked] = useState(task.isChecked || false) 
 
     // Verify if the task is empty and set isChecked as false if it is
     useEffect(() => {
@@ -19,6 +16,9 @@ function TaskItem({ tasksList, task, index, inputRefs, handleTaskEdit, handleTas
     
     function handleTaskCheck() {
         setIsChecked(!isChecked)
+        const updatedTasksList = [...tasksList]
+        updatedTasksList[index].isChecked = !isChecked
+        setTasksList(updatedTasksList)
     }
     return (
         <div className='relative w-full'>
@@ -27,8 +27,8 @@ function TaskItem({ tasksList, task, index, inputRefs, handleTaskEdit, handleTas
                 type="text"
                 id="task"
                 autoComplete="off"
-                className={`block w-full pl-3 pr-16 py-4 text-sm border rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 peer transition-colors duration-150 ${isChecked ? 'border-green-500 text-green-500 dark:bg-emerald-900 dark:border-green-500' : 'border-gray-300 text-gray-900 '}
-                `}
+                className={`block w-full pl-3 pr-16 py-4 text-sm border rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 peer transition-colors duration-150 ${task.isChecked ? 'border-green-500 text-green-500 dark:bg-emerald-900 dark:border-green-500' : 'border-gray-300 text-gray-900'}`}
+
                 placeholder="Enter New Task"
                 value={task.task}
                 onChange={(e) => handleTaskEdit(e, index)}

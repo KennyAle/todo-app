@@ -48,10 +48,15 @@ function TodoList({ listName, onListRemove }) {
         onListRemove(listName)
     }
 
+    // Calculate completion percentage and set the width of the progress bar
+    const completedTasksCount = tasksList.filter(task => task.isChecked && task.task.trim() !== '').length
+    const totalTasksCount = tasksList.filter(task => task.task.trim() !== '').length
+    const completionPercentage = (completedTasksCount / totalTasksCount) * 100
+
     return (
         <div className='relative rounded-md max-w-sm min-w-72 bg-gray-50 dark:bg-gray-800 dark:border-gray-700'>
             <div className="w-full bg-gray-200 rounded-t-md h-2.5 dark:bg-gray-700">
-                <div className="bg-emerald-600 h-2.5 rounded-full w-[70%] transition-transform" /*style="width: 45%"*/></div>
+                <div className="bg-emerald-600 h-2.5 rounded-full transition-all" style={{ width: `${completionPercentage}%` }} /*style="width: 45%"*/></div>
             </div>
             <svg
                 onClick={handleListRemove}
@@ -71,6 +76,7 @@ function TodoList({ listName, onListRemove }) {
                             <TaskItem
                                 inputRefs={inputRefs}
                                 tasksList={tasksList}
+                                setTasksList={setTasksList}
                                 key={index}
                                 index={index}
                                 task={task}
